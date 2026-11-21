@@ -1,0 +1,743 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% include 'partials/head.html' %}
+
+    <title>{{ product.name }} | BUYZO</title>
+
+    <style>
+        :root {
+            --navy: #122838;
+            --cream: #E4D1AF;
+            --orange: #F28C28;
+            --light: #F7F7F5;
+            --white: #FFFFFF;
+            --muted: #71808A;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--light);
+            color: var(--navy);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .product-section {
+            padding: 55px 20px 75px;
+        }
+
+        .product-container {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .breadcrumb a {
+            color: var(--navy);
+            text-decoration: none;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 55px;
+            align-items: start;
+        }
+
+        .gallery-card {
+            background: var(--white);
+            padding: 22px;
+            border-radius: 18px;
+            border: 1px solid #E8E8E5;
+        }
+
+        .main-image-container {
+            height: 480px;
+            background: #F8F8F6;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .main-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 15px;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .image-gallery img {
+            width: 78px;
+            height: 78px;
+            object-fit: contain;
+            background: #F8F8F6;
+            border: 1px solid #E4E4E0;
+            border-radius: 10px;
+            padding: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .image-gallery img:hover {
+            border-color: var(--orange);
+        }
+
+        .product-details {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 18px;
+            border: 1px solid #E8E8E5;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: #F5EBDD;
+            color: var(--navy);
+            padding: 7px 13px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 17px;
+        }
+
+        .product-title {
+            font-size: 30px;
+            line-height: 1.3;
+            font-weight: 750;
+            margin: 0 0 15px;
+            color: var(--navy);
+        }
+
+        .product-price {
+            font-size: 29px;
+            font-weight: 800;
+            color: var(--orange);
+            margin-bottom: 20px;
+        }
+
+        .product-description {
+            color: #65737C;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+
+        .selection-group {
+            margin-top: 27px;
+        }
+
+        .selection-heading {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 13px;
+        }
+
+        .selection-heading span {
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        .colour-options,
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+        }
+
+        .colour-button,
+        .size-options button {
+            border: 1px solid #DADFDA;
+            background: var(--white);
+            color: var(--navy);
+            border-radius: 9px;
+            padding: 11px 17px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .colour-button:hover,
+        .size-options button:hover {
+            border-color: var(--orange);
+        }
+
+        .colour-button.active,
+        .size-options button.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .size-options button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .stock-note {
+            font-size: 12px;
+            color: #71808A;
+            margin-top: 12px;
+        }
+
+        .cart-button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            background: var(--orange);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cart-button:hover:not(:disabled) {
+            background: #DE7415;
+            transform: translateY(-2px);
+        }
+
+        .cart-button:disabled {
+            background: #C7C7C7;
+            cursor: not-allowed;
+        }
+
+        .continue-link {
+            display: block;
+            text-align: center;
+            margin-top: 17px;
+            padding: 14px;
+            border: 1px solid #DADFDA;
+            border-radius: 10px;
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .continue-link:hover {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* Quantity control shown after adding to cart */
+        .detail-qty {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 6px;
+            border: 2px solid var(--orange);
+            border-radius: 10px;
+            background: var(--white);
+        }
+
+        .detail-qty button {
+            width: 48px;
+            height: 44px;
+            border: none;
+            border-radius: 8px;
+            background: var(--orange);
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .detail-qty button:hover:not(:disabled) {
+            background: #DE7415;
+        }
+
+        .detail-qty button:disabled {
+            background: #C7C7C7;
+            cursor: not-allowed;
+        }
+
+        .detail-qty .qty-value {
+            flex: 1;
+            text-align: center;
+            color: var(--navy);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .detail-qty .qty-label {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .product-layout {
+                gap: 28px;
+            }
+
+            .main-image-container {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-section {
+                padding: 30px 15px 50px;
+            }
+
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+
+            .main-image-container {
+                height: 340px;
+            }
+
+            .product-details {
+                padding: 23px;
+            }
+
+            .product-title {
+                font-size: 25px;
+            }
+
+            .product-price {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'partials/navbar.html' %}
+
+<section class="product-section">
+    <div class="product-container">
+
+        <div class="breadcrumb">
+            <a href="{% url 'core:index' %}">Home</a>
+            / Product Details
+        </div>
+
+        <div class="product-layout">
+
+            <!-- Product Gallery -->
+            <div class="gallery-card">
+
+                <div class="main-image-container" id="mainImageContainer">
+                    {% if product.image %}
+                        <img id="mainImage"
+                             src="{{ product.image.url }}"
+                             alt="{{ product.name }}">
+                    {% else %}
+                        <p>No product image available.</p>
+                    {% endif %}
+                </div>
+
+                <div id="imageGallery" class="image-gallery"></div>
+
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-details">
+
+                <div class="product-category">
+                    {% if product.category %}
+                        {{ product.category.name }}
+                    {% else %}
+                        General
+                    {% endif %}
+                </div>
+
+                <h1 class="product-title">{{ product.name }}</h1>
+
+                <div class="product-price">
+                    ₹{{ product.price }}
+                </div>
+
+                {% if product.description %}
+                    <p class="product-description">
+                        {{ product.description }}
+                    </p>
+                {% endif %}
+
+                
+<form method="POST"
+      action="{% url 'core:add_to_cart' product.id %}"
+      id="cartForm">
+
+    {% csrf_token %}
+
+    {% if colour_data %}
+
+        <div class="selection-group">
+            <div class="selection-heading">
+                Choose Colour
+            </div>
+
+            <div class="colour-options">
+                {% for colour in colour_data %}
+                    <button type="button"
+                            class="colour-button"
+                            data-colour="{{ forloop.counter0 }}">
+                        {{ colour.name }}
+                    </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="selection-group">
+            <div class="selection-heading">
+                Choose Size
+            </div>
+
+            <div id="sizeOptions" class="size-options">
+                <p class="stock-note">
+                    Select a colour to view available sizes.
+                </p>
+            </div>
+
+            <p class="stock-note" id="stockNote">
+                Select a size to continue.
+            </p>
+        </div>
+
+        <input type="hidden"
+               name="variant_id"
+               id="variantId">
+
+        <button type="submit"
+                id="addToCartButton"
+                class="cart-button"
+                disabled>
+            ADD TO CART
+        </button>
+
+    {% else %}
+
+        <button type="submit" id="addToCartButton" class="cart-button">
+            ADD TO CART
+        </button>
+
+    {% endif %}
+
+    <div id="qtyControl" class="detail-qty">
+        <button type="button" id="qtyMinus" aria-label="Decrease quantity">−</button>
+        <div class="qty-value">
+            <span id="qtyValue">0</span>
+            <span class="qty-label">in your cart</span>
+        </div>
+        <button type="button" id="qtyPlus" aria-label="Increase quantity">+</button>
+    </div>
+
+</form>
+
+
+                <a href="{% url 'core:index' %}" class="continue-link">
+                    ← Continue Shopping
+                </a>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{{ colour_data|json_script:"product-colours-data" }}
+{{ request.session.cart|json_script:"cart-data" }}
+
+<script>
+const colours = JSON.parse(
+    document.getElementById('product-colours-data').textContent
+) || [];
+
+let cart = {};
+try {
+    cart = JSON.parse(document.getElementById('cart-data').textContent) || {};
+} catch (error) {
+    cart = {};
+}
+if (typeof cart !== 'object') cart = {};
+
+const hasVariants = colours.length > 0;
+const productId = '{{ product.id }}';
+const updateUrl = "{% url 'core:update_cart_quantity' product.id %}";
+
+const cartForm = document.getElementById('cartForm');
+const addToCartButton = document.getElementById('addToCartButton');
+const qtyControl = document.getElementById('qtyControl');
+const qtyValue = document.getElementById('qtyValue');
+const qtyMinus = document.getElementById('qtyMinus');
+const qtyPlus = document.getElementById('qtyPlus');
+const variantId = document.getElementById('variantId');   // null for simple products
+
+// Cart key used by the backend: v_<variantId> or the product id.
+function currentKey() {
+    if (hasVariants) {
+        return variantId && variantId.value ? 'v_' + variantId.value : null;
+    }
+    return productId;
+}
+
+// Show either the ADD TO CART button or the - 1 + control.
+function refreshControl() {
+    const key = currentKey();
+    const qty = key ? (parseInt(cart[key]) || 0) : 0;
+
+    if (qty > 0) {
+        addToCartButton.style.display = 'none';
+        qtyControl.style.display = 'flex';
+        qtyValue.textContent = qty;
+    } else {
+        addToCartButton.style.display = 'block';
+        qtyControl.style.display = 'none';
+        qtyValue.textContent = 0;
+    }
+}
+
+function updateHeaderCart(data) {
+    const cartCount = document.getElementById('cartCount');
+    if (cartCount && data.cart_count !== undefined) {
+        cartCount.innerText = data.cart_count;
+    }
+
+    const cartContent = document.getElementById('offcanvasCartContent');
+    if (cartContent && data.cart_html) {
+        cartContent.innerHTML = data.cart_html;
+    }
+}
+
+async function sendRequest(url, formData) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: formData
+    });
+
+    let data = {};
+    try {
+        data = await response.json();
+    } catch (error) {
+        throw new Error('Something went wrong. Please try again.');
+    }
+
+    if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Request failed.');
+    }
+
+    return data;
+}
+
+function saveQuantity(key, quantity) {
+    if (quantity > 0) {
+        cart[key] = quantity;
+    } else {
+        delete cart[key];
+    }
+}
+
+// Add to cart without reloading the page.
+cartForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const key = currentKey();
+
+    if (!key) {
+        alert('Please select a colour and size first.');
+        return;
+    }
+
+    addToCartButton.disabled = true;
+
+    try {
+        const data = await sendRequest(cartForm.action, new FormData(cartForm));
+
+        saveQuantity(key, data.quantity);
+        updateHeaderCart(data);
+
+    } catch (error) {
+        alert(error.message || 'Could not add product. Please try again.');
+
+    } finally {
+        addToCartButton.disabled = false;
+        refreshControl();
+    }
+});
+
+// Plus / minus.
+[qtyMinus, qtyPlus].forEach(button => {
+    button.addEventListener('click', async function () {
+        const key = currentKey();
+        if (!key) return;
+
+        const current = parseInt(cart[key]) || 0;
+        const next = current + (button === qtyPlus ? 1 : -1);
+
+        if (next < 0) return;
+
+        const formData = new FormData();
+        formData.append('quantity', next);
+        formData.append('cart_key', key);
+        formData.append(
+            'csrfmiddlewaretoken',
+            cartForm.querySelector('[name="csrfmiddlewaretoken"]').value
+        );
+
+        qtyMinus.disabled = true;
+        qtyPlus.disabled = true;
+
+        try {
+            const data = await sendRequest(updateUrl, formData);
+
+            saveQuantity(key, data.quantity);
+            updateHeaderCart(data);
+
+        } catch (error) {
+            alert(error.message || 'Could not update quantity.');
+
+        } finally {
+            qtyMinus.disabled = false;
+            qtyPlus.disabled = false;
+            refreshControl();
+        }
+    });
+});
+
+if (hasVariants) {
+
+    let selectedColour = null;
+    let selectedVariant = null;
+
+    const mainImage = document.getElementById('mainImage');
+    const imageGallery = document.getElementById('imageGallery');
+    const sizeOptions = document.getElementById('sizeOptions');
+    const stockNote = document.getElementById('stockNote');
+
+    function selectColour(index) {
+        selectedColour = colours[index];
+        selectedVariant = null;
+
+        variantId.value = '';
+        addToCartButton.disabled = true;
+        stockNote.textContent = 'Select a size to continue.';
+        refreshControl();
+
+        document.querySelectorAll('.colour-button').forEach(button => {
+            button.classList.remove('active');
+        });
+
+        document.querySelector(
+            `[data-colour="${index}"]`
+        ).classList.add('active');
+
+        imageGallery.innerHTML = '';
+
+        if (selectedColour.images.length > 0) {
+            selectedColour.images.forEach(image => {
+                const thumbnail = document.createElement('img');
+
+                thumbnail.src = image.url;
+                thumbnail.alt = selectedColour.name + ' ' + image.view;
+
+                thumbnail.addEventListener('click', () => {
+                    mainImage.src = image.url;
+                });
+
+                imageGallery.appendChild(thumbnail);
+            });
+
+            if (mainImage) {
+                mainImage.src = selectedColour.images[0].url;
+            }
+        } else {
+            imageGallery.innerHTML =
+                '<p class="stock-note">No colour images available.</p>';
+        }
+
+        sizeOptions.innerHTML = '';
+
+        selectedColour.variants.forEach(variant => {
+            const button = document.createElement('button');
+
+            button.type = 'button';
+            button.textContent = variant.size;
+
+            if (variant.stock <= 0) {
+                button.disabled = true;
+                button.title = 'Out of stock';
+            }
+
+            button.addEventListener('click', () => {
+                selectedVariant = variant;
+                variantId.value = variant.id;
+                addToCartButton.disabled = false;
+
+                sizeOptions.querySelectorAll('button').forEach(sizeButton => {
+                    sizeButton.classList.remove('active');
+                });
+
+                button.classList.add('active');
+                stockNote.textContent = variant.stock + ' available';
+
+                // Show - 1 + if this size is already in the cart.
+                refreshControl();
+            });
+
+            sizeOptions.appendChild(button);
+        });
+
+        if (selectedColour.variants.length === 0) {
+            sizeOptions.innerHTML =
+                '<p class="stock-note">No sizes available.</p>';
+        }
+    }
+
+    document.querySelectorAll('.colour-button').forEach(button => {
+        button.addEventListener('click', function() {
+            selectColour(Number(this.dataset.colour));
+        });
+    });
+}
+
+// Initial state (simple products already in the cart show - 1 +).
+refreshControl();
+</script>
+
+
+{% include 'partials/footer.html' %}
+
+{% include 'partials/scripts.html' %}
+
+</body>
+</html>

@@ -1,0 +1,1293 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {% include 'partials/head.html' %}
+
+    <title>Buyzo | Online Shopping</title>
+
+    <style>
+        /* =====================================
+           BUYZO HOMEPAGE THEME
+           Primary: Deep Navy #122838
+           Text: Warm Beige #E4D1AF
+           Accent: Orange #F28C28
+        ===================================== */
+
+        body {
+            background-color: #122838 !important;
+            color: #E4D1AF;
+        }
+
+        main h1,
+        main h2,
+        main h3,
+        main h4,
+        main h5,
+        main h6,
+        main p,
+        main label,
+        main li {
+            color: #E4D1AF;
+        }
+
+        main a {
+            color: #E4D1AF;
+        }
+
+        main a:hover {
+            color: #F28C28;
+        }
+
+        header svg {
+            color: #E4D1AF;
+        }
+
+        /* Hero slider */
+        .swiper-slide > div > span {
+            background-color: #F28C28 !important;
+            color: #122838 !important;
+        }
+
+        .swiper-slide h1,
+        .swiper-slide h2,
+        .swiper-slide p,
+        .swiper-slide h2 span {
+            color: #E4D1AF !important;
+        }
+
+        .swiper-slide .btn,
+        section .btn {
+            background: #F28C28 !important;
+            color: #122838 !important;
+            border: 1px solid #F28C28 !important;
+            font-weight: 700;
+        }
+
+        .swiper-slide .btn:hover,
+        section .btn:hover {
+            background: #E4D1AF !important;
+            border-color: #E4D1AF !important;
+            color: #122838 !important;
+        }
+
+        /* Featured category cards */
+        #featured-categories .swiper-slide > a > div {
+            background: #E4D1AF !important;
+            border-color: rgba(242, 140, 40, 0.45) !important;
+        }
+
+        #featured-categories .category-content,
+        #featured-categories .category-content div {
+            color: #122838 !important;
+        }
+
+        #featured-categories .swiper-slide > a > div:hover {
+            border-color: #F28C28 !important;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+        }
+
+        /* Product cards */
+        .card-product {
+            height: 100%;
+            position: relative;
+            background: #E4D1AF !important;
+            border: 1px solid rgba(242, 140, 40, 0.45) !important;
+            color: #122838;
+        }
+
+        .card-product img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .card-product h3,
+        .card-product small,
+        .card-product span,
+        .card-product p,
+        .card-product a {
+            color: #122838;
+        }
+
+        .card-product a:hover {
+            color: #F28C28;
+        }
+
+        /* Wishlist */
+        .wishlist-form {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 20;
+            margin: 0;
+        }
+
+        .wishlist-btn {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 30px !important;
+            line-height: 1 !important;
+            cursor: pointer;
+            box-shadow: none !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-outline {
+            display: inline;
+            color: #122838 !important;
+        }
+
+        .heart-filled {
+            display: none;
+            color: #F28C28 !important;
+        }
+
+        .wishlist-btn.active .heart-outline {
+            display: none;
+        }
+
+        .wishlist-btn.active .heart-filled {
+            display: inline;
+        }
+
+        /* Add to Cart and quantity controls */
+        .card-product form {
+            flex-shrink: 0;
+        }
+
+        .add-to-cart-form button {
+            background-color: #F28C28 !important;
+            color: #122838 !important;
+            padding: 8px 16px;
+            border: 1px solid #F28C28;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .add-to-cart-form button:hover {
+            background-color: #122838 !important;
+            color: #E4D1AF !important;
+            border-color: #122838;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #F28C28;
+            border-radius: 6px;
+            padding: 5px 10px;
+        }
+
+        .quantity-control button {
+            background: transparent !important;
+            color: #122838 !important;
+            border: none !important;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .quantity-control .quantity-value {
+            color: #122838 !important;
+            font-weight: bold;
+        }
+
+        /* Product colour swatches */
+        .product-colours {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .colour-swatch {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid #122838;
+            display: inline-block;
+        }
+
+        /* Service information icons and accent details */
+        main section img[src*="/icons/"] {
+            filter: none;
+        }
+
+        main .text-green-600,
+        main .text-green-700,
+        main .text-yellow-500 {
+            color: #F28C28 !important;
+        }
+
+        /* Mobile-friendly product images */
+        /* Responsive product images */
+.card-product img {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+}
+
+@media (max-width: 767px) {
+    .card-product img {
+        height: 150px;
+    }
+
+    .card-product .p-4 {
+        padding: 10px;
+    }
+
+    .card-product h3 {
+        font-size: 13px;
+    }
+
+    .card-product .add-to-cart-form button {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+
+    .card-product .quantity-control {
+        gap: 5px;
+        padding: 4px 6px;
+    }
+}
+
+
+/* HOMEPAGE PRODUCT OPTIONS POPUP */
+
+.product-options-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.product-options-content {
+    position: relative;
+        width: min(100%, 430px);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #122838;
+    color: #E4D1AF;
+    border: 1px solid rgba(228, 209, 175, 0.35);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+}
+
+.product-options-content h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 30px 24px 0;
+    color: #E4D1AF;
+}
+
+.close-options {
+    position: absolute;
+    top: 12px;
+    right: 17px;
+    background: none;
+    border: none;
+    color: #E4D1AF;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.option-group {
+    margin-bottom: 22px;
+}
+
+.option-group h4 {
+    color: #E4D1AF;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.option-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.option-buttons button {
+    padding: 9px 17px;
+    border: 1px solid #E4D1AF;
+    border-radius: 6px;
+    background: transparent;
+    color: #E4D1AF;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.option-buttons button:hover,
+.option-buttons button.active {
+    background: #F28C28;
+    color: #122838;
+    border-color: #F28C28;
+}
+
+.option-buttons button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+#optionsStockMessage {
+    color: #E4D1AF;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+#confirmHomepageAdd {
+    width: 100%;
+    padding: 12px;
+    background: #F28C28;
+    color: #122838;
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#confirmHomepageAdd:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Homepage popup mobile responsiveness */
+@media (max-width: 480px) {
+    .product-options-modal {
+        padding: 12px;
+    }
+
+    .product-options-content {
+        padding: 22px 18px;
+        border-radius: 12px;
+    }
+
+    .product-options-content h3 {
+        font-size: 19px;
+        margin-bottom: 20px;
+    }
+
+    .option-buttons {
+        gap: 8px;
+    }
+
+    .option-buttons button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+    {% include 'partials/navbar.html' %}
+
+    <main>
+
+        <!-- Hero Slider -->
+        <section class="mt-8">
+            <div class="container">
+                <div class="swiper-container swiper" id="swiper-1"
+                    data-pagination-type="" data-speed="400"
+                    data-space-between="100" data-pagination="true"
+                    data-navigation="false" data-autoplay="true"
+                    data-autoplay-delay="3000" data-effect="fade"
+                    data-breakpoints='{"480": {"slidesPerView": 1}, "768": {"slidesPerView": 1}, "1024": {"slidesPerView": 1}}'>
+
+                    <div class="swiper-wrapper pb-8">
+
+                        <div class="swiper-slide"
+                            style="background: url({% static 'assets/images/slider/slider-1.png' %}) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center">
+
+                            <div class="py-10 px-5 sm:py-12 sm:px-8 lg:py-32 lg:pl-12 xl:w-2/5 md:w-3/5">
+
+                                <span class="inline-block p-2 text-sm align-baseline leading-none rounded-lg bg-yellow-500 text-gray-900 font-semibold">
+                                    Opening Sale Discount 50%
+                                </span>
+
+                                <div class="my-7 flex flex-col gap-2">
+                                    <h1 class="text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight">
+                                        Wear Your Confidence
+                                    </h1>
+
+                                    <p class="text-md font-light">
+                                        Discover the latest trends and elevate your wardrobe with styles made just for you.
+                                    </p>
+                                </div>
+
+                                <a href="{% url 'core:category_detail' 3 %}"
+                                    class="btn inline-flex items-center gap-x-2">
+                                    Shop Now
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-arrow-right inline-block"
+                                        width="14" height="14" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l14 0" />
+                                        <path d="M13 18l6 -6" />
+                                        <path d="M13 6l6 6" />
+                                    </svg>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide"
+                            style="background: url({% static 'assets/images/slider/slider-2.png' %}) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center">
+
+                            <div class="py-10 px-5 sm:py-12 sm:px-8 lg:py-32 lg:pl-12 lg:pr-6 xl:w-2/5 md:w-3/5">
+
+                                <span class="inline-block p-2 text-sm align-baseline leading-none rounded-lg font-semibold"
+    style="background-color: #F28C28; color: #122838 !important;">
+    Free Shipping - orders over ₹100
+</span>
+
+<div class="my-7 flex flex-col gap-2">
+    <h2 class="text-2xl sm:text-3xl lg:text-5xl font-bold leading-tight"
+        style="color: #122838 !important;">
+        Free Shipping on
+        <br />
+        orders over
+        <span style="color: #122838 !important;">₹100</span>
+    </h2>
+
+    <p style="color: #122838 !important;">
+        Free Shipping to First-Time Customers Only, After promotions and discounts are applied.
+    </p>
+</div>
+
+                                <a href="#featured-categories"
+                                    class="btn inline-flex items-center gap-x-2">
+                                    Shop Now
+
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-arrow-right inline-block"
+                                        width="14" height="14" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l14 0" />
+                                        <path d="M13 18l6 -6" />
+                                        <path d="M13 6l6 6" />
+                                    </svg>
+                                </a>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="swiper-pagination !bottom-14"></div>
+
+                    <div class="swiper-navigation">
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Categories -->
+        <section class="mt-8" id="featured-categories">
+            <div class="container">
+
+                <div class="flex flex-wrap">
+                    <div class="w-full">
+                        <h2 class="buyzo-category-img">Featured Categories</h2>
+                    </div>
+                </div>
+
+                <div class="swiper-container swiper" id="swiper-1"
+                    data-pagination-type="" data-speed="400"
+                    data-space-between="20" data-pagination="false"
+                    data-navigation="true" data-autoplay="true"
+                    data-autoplay-delay="3000" data-effect="slide"
+                    data-breakpoints='{"480": {"slidesPerView": 2}, "768": {"slidesPerView": 3}, "1024": {"slidesPerView": 6}}'>
+
+                    <div class="swiper-wrapper py-6 sm:py-10 lg:py-12">
+
+                        {% for category in main_categories %}
+                        <div class="swiper-slide">
+                            <a href="{% url 'core:category_detail' category.id %}">
+
+                                <div class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
+
+                                    <div class="category-content">
+
+                                        {% if category.image %}
+                                        <img src="{{ category.image.url }}"
+                                            alt="{{ category.name }}"
+                                            class="category-img" />
+                                        {% else %}
+                                        <img src="{% static 'assets/images/category/fashion main.png' %}"
+                                            alt="{{ category.name }}"
+                                            class="category-img" />
+                                        {% endif %}
+
+                                        <div class="text-base">{{ category.name }}</div>
+
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="swiper-pagination"></div>
+
+                    <div class="swiper-navigation">
+                        <div class="swiper-button-next top-[28px]"></div>
+                        <div class="swiper-button-prev top-[28px] !right-0 !left-auto mx-10"></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+<!-- Promotional Banners -->
+<section>
+    <div class="container">
+        <div class="flex md:space-x-2 lg:space-x-6 flex-wrap md:flex-nowrap">
+
+            <!-- Fruits & Vegetables Banner -->
+            <div class="w-full md:w-1/2 mb-3">
+                <div class="py-7 px-5 sm:py-10 sm:px-8 rounded-lg"
+                    style="background: url({% static 'assets/images/banner/grocery-banner.png' %}) no-repeat; background-size: cover; background-position: center">
+
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-1">
+
+                            <h2 class="font-bold text-xl"
+                                style="color: #122838 !important;">
+                                Fruits & Vegetables
+                            </h2>
+
+                            <p style="color: #122838 !important;">
+                                Get Upto
+                                <span class="font-bold"
+                                    style="color: #F28C28 !important;">
+                                    30%
+                                </span>
+                                Off
+                            </p>
+
+                        </div>
+
+                        <div class="flex flex-wrap">
+                            <a href="/category/108/"
+                                class="btn inline-flex items-center gap-x-2"
+                                style="background: #F28C28 !important; color: #122838 !important; border: 1px solid #F28C28 !important; font-weight: 700;">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Freshly Baked Buns Banner -->
+            <div class="w-full md:w-1/2">
+                <div class="py-7 px-5 sm:py-10 sm:px-8 rounded-lg"
+                    style="background: url({% static 'assets/images/banner/grocery-banner-2.jpg' %}) no-repeat; background-size: cover; background-position: center">
+
+                    <div class="flex flex-col gap-5">
+                        <div class="flex flex-col gap-1">
+
+                            <h2 class="font-bold text-xl"
+                                style="color: #122838 !important;">
+                                Freshly Baked Buns
+                            </h2>
+
+                            <p style="color: #122838 !important;">
+                                Get Upto
+                                <span class="font-bold"
+                                    style="color: #F28C28 !important;">
+                                    25%
+                                </span>
+                                Off
+                            </p>
+
+                        </div>
+
+                        <div class="flex flex-wrap">
+                            <a href="/category/107/"
+                                class="btn inline-flex items-center gap-x-2"
+                                style="background: #F28C28 !important; color: #122838 !important; border: 1px solid #F28C28 !important; font-weight: 700;">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Promotional Banners End -->
+
+
+        <!-- Popular Products Start -->
+        <section class="lg:my-14 my-8 homepage-products">
+            <div class="container">
+
+                <div class="flex flex-wrap">
+                    <div class="w-full mb-4 sm:mb-6">
+                        <h2 class="text-lg">Popular Products</h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+
+                    {% for product in products %}
+
+                    <div class="relative rounded-lg border bg-white border-gray-300 card-product">
+
+                        <!-- Wishlist button -->
+                        <form method="POST"
+                            action="{% url 'core:toggle_wishlist' product.id %}"
+                            class="wishlist-form">
+
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                class="wishlist-btn {% if product.id in wishlist_product_ids %}active{% endif %}"
+                                title="Add to Wishlist">
+
+                                <span class="heart-outline">♡</span>
+                                <span class="heart-filled">♥</span>
+
+                            </button>
+                        </form>
+
+                        <div class="p-4">
+
+                            <div class="text-center flex justify-center">
+                                <a href="{% url 'core:product_detail' product.id %}">
+                                    {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                    <img src="{% static 'assets/images/products/product-img-1.jpg' %}" alt="{{ product.name }}">
+                                    {% endif %}
+                                </a>
+                            </div>
+
+                            <div class="flex flex-col gap-3 mt-3">
+
+                                <small>
+                                    {% if product.category %}
+                                    {{ product.category.name }}
+                                    {% else %}
+                                    General
+                                    {% endif %}
+                                </small>
+
+                                <h3 class="text-base truncate">{{ product.name }}</h3>
+
+                                <div class="flex justify-between items-center">
+
+                                    <span class="font-semibold">₹{{ product.price }}</span>
+
+                                    
+<div class="cart-control"
+     data-product-id="{{ product.id }}"
+     data-update-url="{% url 'core:update_cart_quantity' product.id %}"
+     data-cart-key="{{ product.id }}">
+
+    <form method="POST"
+          class="add-to-cart-form"
+          action="{% url 'core:add_to_cart' product.id %}">
+
+        {% csrf_token %}
+
+        <button type="submit" class="add-to-cart-button">
+            Add to Cart
+        </button>
+    </form>
+
+    <div class="quantity-control"
+         style="display: none;">
+
+        <button type="button" class="quantity-minus">−</button>
+
+        <span class="quantity-value">0</span>
+
+        <button type="button" class="quantity-plus">+</button>
+
+    </div>
+
+    {{ product.homepage_colours|json_script:product.id }}
+
+</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% empty %}
+                    <p>No products available yet.</p>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </section>
+        <!-- Popular Products End -->
+
+        <!-- Trending Deals Start -->
+        <section class="my-8 lg:my-12">
+            <div class="container">
+                <div class="relative overflow-hidden rounded-xl">
+
+                    <img
+                        src="{% static 'assets/images/banner/buyzo-mega-sale.png' %}"
+                        alt="BUYZO Mega Sale - Upgrade Your Style"
+                        class="block w-full h-auto"
+                    >
+
+                    {% if daily_sales_category %}
+                    <a
+                        href="{% url 'core:category_detail' daily_sales_category.id %}"
+                        aria-label="Shop BUYZO Daily Sales"
+                        class="absolute"
+                        style="left: 6%; top: 76%; width: 21%; height: 15%;"
+                    ></a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </section>
+        <!-- Trending Deals End -->
+
+        <!-- Service Information -->
+        <section class="lg:my-14 my-8">
+            <div class="container">
+                <div class="flex flex-wrap gap-y-6">
+
+                    <div class="w-full sm:w-1/2 lg:w-1/4 px-3">
+                        <div class="flex flex-col gap-4">
+                            <div class="inline-block">
+                                <img src="{% static 'assets/images/icons/clock.svg' %}" alt="" />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-md">Fast & Convenient Shopping</h3>
+                                <p>
+                                    Get your order delivered to your doorstep at the earliest from FreshCart pickup stores near you.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full sm:w-1/2 lg:w-1/4 px-3">
+                        <div class="flex flex-col gap-4">
+                            <div class="inline-block">
+                                <img src="{% static 'assets/images/icons/gift.svg' %}" alt="" />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-md">Best Prices & Offers</h3>
+                                <p>
+                                    Cheaper prices than your local supermarket, great cashback offers to top it off. Get best pricess & offers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full sm:w-1/2 lg:w-1/4 px-3">
+                        <div class="flex flex-col gap-4">
+                            <div class="inline-block">
+                                <img src="{% static 'assets/images/icons/package.svg' %}" alt="" />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-md">Wide Assortment</h3>
+                                <p>
+                                    Choose from 5000+ products across food, personal care, household, bakery, veg and non-veg & other categories.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full sm:w-1/2 lg:w-1/4 px-3">
+                        <div class="flex flex-col gap-4">
+                            <div class="inline-block">
+                                <img src="{% static 'assets/images/icons/refresh-cw.svg' %}" alt="" />
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-md">Easy Returns</h3>
+                                <p>
+                                    Not satisfied with a product? Return it at the doorstep & get a refund within hours.
+                                    No questions asked
+                                    <a href="#!" class="text-green-600">policy</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+<!-- BUYZO CONTACT SECTION -->
+
+<section class="py-10" style="background: #E4D1AF;">
+    <div class="container text-center">
+
+        <h2 class="text-2xl font-bold mb-3"
+            style="color: #F28C28;">
+            Contact Us
+        </h2>
+
+        <p class="mb-6" style="color: #122838;">
+            Have questions or need help? Get in touch with us!
+        </p>
+
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6 px-3">
+
+            <!-- EMAIL -->
+            <a href="mailto:ghodeshwarharshita@gmail.com"
+                class="flex items-center gap-3 font-semibold text-sm sm:text-base break-all"
+                style="color: #122838;">
+
+                <span style="color: #F28C28; font-size: 22px;">
+                    ✉
+                </span>
+
+                ghodeshwarharshita@gmail.com
+
+            </a>
+
+            <!-- PHONE -->
+            <a href="tel:+918120720050"
+                class="flex items-center gap-3 font-semibold text-sm sm:text-base break-all"
+                style="color: #122838;">
+
+                <span style="color: #F28C28; font-size: 22px;">
+                    ☎
+                </span>
+
+                +91 8120720050
+
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+
+    {% include 'partials/footer.html' %}
+    {% include 'partials/modal-product.html' %}
+    {% include 'partials/scripts.html' %}
+
+    
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const modal = document.getElementById('productOptionsModal');
+    const closeModal = document.getElementById('closeOptionsModal');
+    const productName = document.getElementById('optionsProductName');
+    const colourSelection = document.getElementById('colourSelection');
+    const sizeSelection = document.getElementById('sizeSelection');
+    const colourOptions = document.getElementById('homepageColourOptions');
+    const sizeOptions = document.getElementById('homepageSizeOptions');
+    const stockMessage = document.getElementById('optionsStockMessage');
+    const confirmButton = document.getElementById('confirmHomepageAdd');
+
+    let activeControl = null;
+    let activeForm = null;
+    let selectedVariant = null;
+
+    async function sendRequest(url, formData) {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || 'Request failed.');
+        }
+
+        return data;
+    }
+
+    function updateCartCount(count) {
+        const cartCount = document.getElementById('cartCount');
+
+        if (cartCount) {
+            cartCount.innerText = count;
+        }
+    }
+
+    function updateOffcanvasCart(html) {
+        const cartContent = document.getElementById('offcanvasCartContent');
+
+        if (cartContent) {
+            cartContent.innerHTML = html;
+        }
+    }
+
+    function closeOptionsModal() {
+        modal.style.display = 'none';
+        activeControl = null;
+        activeForm = null;
+        selectedVariant = null;
+    }
+
+    closeModal.addEventListener('click', closeOptionsModal);
+
+    modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            closeOptionsModal();
+        }
+    });
+
+    // Show available sizes for the selected colour.
+    function showSizes(colour, button) {
+        selectedVariant = null;
+        confirmButton.disabled = true;
+        sizeOptions.innerHTML = '';
+        stockMessage.innerText = '';
+
+        colourOptions.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+
+        button.classList.add('selected');
+        sizeSelection.style.display = 'block';
+
+        const variants = colour.variants || [];
+
+        variants.forEach(variant => {
+            const sizeButton = document.createElement('button');
+
+            sizeButton.type = 'button';
+            sizeButton.className = 'option-button';
+            sizeButton.innerText = variant.size;
+
+            if (variant.stock <= 0) {
+                sizeButton.disabled = true;
+                sizeButton.title = 'Out of stock';
+            } else {
+                sizeButton.addEventListener('click', function () {
+                    sizeOptions.querySelectorAll('button').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+
+                    sizeButton.classList.add('selected');
+
+                    selectedVariant = variant;
+                    confirmButton.disabled = false;
+
+                    stockMessage.innerText =
+                        variant.stock + ' available in stock';
+                });
+            }
+
+            sizeOptions.appendChild(sizeButton);
+        });
+
+        if (!variants.some(variant => variant.stock > 0)) {
+            stockMessage.innerText = 'All sizes are currently out of stock.';
+        }
+    }
+
+    // Open colour and size popup.
+    function openOptionsModal(control, form, colours) {
+        activeControl = control;
+        activeForm = form;
+        selectedVariant = null;
+
+        productName.innerText =
+            control.closest('.card-product')?.querySelector('.product-title')?.innerText
+            || 'Choose Product Options';
+
+        colourOptions.innerHTML = '';
+        sizeOptions.innerHTML = '';
+        stockMessage.innerText = '';
+
+        sizeSelection.style.display = 'none';
+        confirmButton.disabled = true;
+
+        colourSelection.style.display = 'block';
+
+        colours.forEach(colour => {
+            const colourButton = document.createElement('button');
+
+            colourButton.type = 'button';
+            colourButton.className = 'option-button';
+            colourButton.innerText = colour.name;
+
+            colourButton.addEventListener('click', function () {
+                showSizes(colour, colourButton);
+            });
+
+            colourOptions.appendChild(colourButton);
+        });
+
+        modal.style.display = 'flex';
+    }
+
+    // Add product or selected variant.
+    async function addProduct(control, form, variantId = null) {
+        const formData = new FormData(form);
+
+        if (variantId !== null) {
+            formData.append('variant_id', variantId);
+        }
+
+        const button = form.querySelector('button');
+        button.disabled = true;
+
+        try {
+            const data = await sendRequest(form.action, formData);
+
+            control.dataset.cartKey =
+                variantId !== null ? 'v_' + variantId : control.dataset.productId;
+
+            const quantityBox = control.querySelector('.quantity-control');
+            const quantityValue = control.querySelector('.quantity-value');
+
+            quantityValue.innerText = data.quantity;
+            quantityBox.style.display = 'flex';
+
+            // Replace Add to Cart with quantity controls after adding.
+form.style.display = 'none';
+
+            updateCartCount(data.cart_count);
+            updateOffcanvasCart(data.cart_html);
+
+            return true;
+
+        } catch (error) {
+            alert(error.message || 'Could not add product. Please try again.');
+            return false;
+
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    // Initialise each homepage product.
+    document.querySelectorAll('.cart-control').forEach(control => {
+        const form = control.querySelector('.add-to-cart-form');
+        const quantityBox = control.querySelector('.quantity-control');
+        const quantityValue = control.querySelector('.quantity-value');
+
+        const dataScript = control.querySelector(
+            'script[type="application/json"]'
+        );
+
+        let colours = [];
+
+        if (dataScript) {
+            try {
+                colours = JSON.parse(dataScript.textContent);
+            } catch (error) {
+                console.error('Could not read product variants:', error);
+            }
+        }
+
+        const availableColours = colours.filter(colour =>
+            colour.variants && colour.variants.length > 0
+        );
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            if (availableColours.length > 0) {
+                openOptionsModal(control, form, availableColours);
+            } else {
+                await addProduct(control, form);
+            }
+        });
+
+        // Quantity plus and minus.
+        control.querySelectorAll(
+            '.quantity-minus, .quantity-plus'
+        ).forEach(button => {
+
+            button.addEventListener('click', async function () {
+                const current = parseInt(quantityValue.innerText) || 0;
+
+                const change = button.classList.contains('quantity-plus')
+                    ? 1 : -1;
+
+                const next = current + change;
+
+                if (next < 0) return;
+
+                const formData = new FormData();
+
+                formData.append('quantity', next);
+                formData.append(
+                    'cart_key',
+                    control.dataset.cartKey || control.dataset.productId
+                );
+
+                formData.append(
+                    'csrfmiddlewaretoken',
+                    form.querySelector('[name="csrfmiddlewaretoken"]').value
+                );
+
+                button.disabled = true;
+
+                try {
+                    const data = await sendRequest(
+                        control.dataset.updateUrl,
+                        formData
+                    );
+
+                    quantityValue.innerText = data.quantity;
+
+                    updateCartCount(data.cart_count);
+                    updateOffcanvasCart(data.cart_html);
+
+                    if (data.quantity === 0) {
+                        quantityBox.style.display = 'none';
+
+                        // Always bring back the Add to Cart button.
+                        // For variant products it reopens the colour/size popup.
+                        form.style.display = 'block';
+
+                        // Forget the previously chosen variant.
+                        control.dataset.cartKey = control.dataset.productId;
+                    }
+
+                } catch (error) {
+                    alert(error.message || 'Could not update quantity.');
+
+                } finally {
+                    button.disabled = false;
+                }
+            });
+        });
+    });
+
+    // Confirm selected colour and size.
+    confirmButton.addEventListener('click', async function () {
+        if (!activeControl || !activeForm || !selectedVariant) {
+            return;
+        }
+
+        confirmButton.disabled = true;
+
+        const success = await addProduct(
+            activeControl,
+            activeForm,
+            selectedVariant.id
+        );
+
+        if (success) {
+            closeOptionsModal();
+        } else {
+            confirmButton.disabled = false;
+        }
+    });
+
+});
+</script>
+
+    <!-- Wishlist JavaScript: kept unchanged -->
+    <script>
+        document.querySelectorAll('.wishlist-form').forEach(form => {
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const button = form.querySelector('.wishlist-btn');
+
+                if (button.disabled) return;
+
+                button.disabled = true;
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        button.classList.toggle('active', data.added);
+                    }
+                } catch (error) {
+                    console.error('Wishlist error:', error);
+                } finally {
+                    button.disabled = false;
+                }
+            });
+        });
+    </script>
+
+
+<!-- Homepage Product Options Popup -->
+<div id="productOptionsModal" class="product-options-modal" style="display: none;">
+
+    <div class="product-options-content">
+
+        <button type="button" id="closeOptionsModal" class="close-options">
+            &times;
+        </button>
+
+        <h3 id="optionsProductName">Choose Product Options</h3>
+
+        <div id="colourSelection" class="option-group" style="display: none;">
+            <h4>Choose Colour</h4>
+            <div id="homepageColourOptions" class="option-buttons"></div>
+        </div>
+
+        <div id="sizeSelection" class="option-group" style="display: none;">
+            <h4>Choose Size</h4>
+            <div id="homepageSizeOptions" class="option-buttons"></div>
+        </div>
+
+        <p id="optionsStockMessage"></p>
+
+        <button type="button" id="confirmHomepageAdd" disabled>
+            Add to Cart
+        </button>
+
+    </div>
+</div>
+
+
+</body>
+</html>

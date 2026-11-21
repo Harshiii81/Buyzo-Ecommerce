@@ -1,0 +1,87 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% include 'partials/head.html' %}
+
+    <title>Order Confirmed | BUYZO</title>
+
+    <style>
+        body {
+            background: #122838;
+            color: #E4D1AF;
+        }
+
+        .success-box {
+            background: white;
+            color: #122838;
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 24px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .success-box h1 { color: #122838; }
+
+        @media (min-width: 640px) {
+            .success-box { margin: 50px auto; padding: 35px; }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'partials/navbar.html' %}
+
+<div class="container mx-auto px-4">
+
+    <div class="success-box">
+
+        <div style="font-size: 55px;">✓</div>
+
+        <h1 class="text-3xl font-bold mb-4">
+            Thank You for Your Order!
+        </h1>
+
+        <p class="text-gray-600 mb-6">
+            Your order has been successfully placed.
+        </p>
+
+        <div class="text-left border rounded-lg p-5 mb-6">
+
+            <p><strong>Order ID:</strong> #{{ order.id }}</p>
+
+            <p><strong>Customer:</strong> {{ order.full_name }}</p>
+
+            <p><strong>Phone:</strong> {{ order.phone }}</p>
+
+            <p><strong>Total Amount:</strong> ₹{{ order.total_amount }}</p>
+
+            <p><strong>Payment Method:</strong> {{ order.get_payment_method_display }}</p>
+
+            <p><strong>Payment Status:</strong> {{ order.get_payment_status_display }}</p>
+
+            <p><strong>Order Status:</strong> {{ order.get_status_display }}</p>
+
+        </div>
+
+        <a href="{% url 'core:index' %}"
+           class="inline-block bg-green-600 text-white px-7 py-3 rounded-lg font-bold">
+            Continue Shopping
+        </a>
+
+    </div>
+
+</div>
+
+{% include 'partials/footer.html' %}
+{% include 'partials/scripts.html' %}
+
+</body>
+</html>

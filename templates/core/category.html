@@ -1,0 +1,614 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% include 'partials/head.html' %}
+
+    <title>{{ category.name }} | BUYZO</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #122838;
+            color: #E4D1AF;
+            font-family: Arial, sans-serif;
+        }
+
+        .listing-container {
+            width: 100%;
+            padding: 30px;
+            min-height: 80vh;
+        }
+
+        /* Breadcrumb */
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #E4D1AF;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb strong {
+            color: #F28C28;
+        }
+
+        /* Heading */
+
+        .listing-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(228, 209, 175, 0.2);
+            color: #E4D1AF;
+        }
+
+        .listing-heading h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .product-count {
+            color: #F28C28;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        /* Main layout */
+
+        .listing-layout {
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 25px;
+        }
+
+        /* Filters */
+
+        .filters {
+            border-right: 1px solid rgba(228, 209, 175, 0.2);
+            padding: 20px 20px 25px 0;
+        }
+
+        .filter-heading {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #E4D1AF;
+        }
+
+        .filter-section {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(228, 209, 175, 0.2);
+        }
+
+        .filter-section h3 {
+            font-size: 14px;
+            margin: 0 0 18px;
+            text-transform: uppercase;
+            color: #E4D1AF;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 13px 0;
+            font-size: 14px;
+            color: #E4D1AF;
+            text-decoration: none;
+        }
+
+        .filter-option:hover {
+            color: #F28C28;
+        }
+
+        .products-area {
+            min-width: 0;
+            padding: 15px 0 30px;
+        }
+
+        /* Toolbar */
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .toolbar-label {
+            font-size: 14px;
+            color: #E4D1AF;
+        }
+
+        .sort-select {
+            padding: 11px 15px;
+            border: 1px solid #F28C28;
+            border-radius: 6px;
+            background: #E4D1AF;
+            color: #122838;
+            font-size: 14px;
+        }
+
+        /* Product grid */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 24px 18px;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        /* Product cards */
+
+        .product-card {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            text-decoration: none;
+            color: #122838;
+            background: #E4D1AF;
+            border: 1px solid rgba(242, 140, 40, 0.4);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: #F28C28;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Product link */
+
+        .product-link {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-width: 0;
+            text-decoration: none;
+            color: #122838;
+        }
+
+        /* Wishlist heart */
+
+        .wishlist-form {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 5;
+            margin: 0;
+        }
+
+        .wishlist-heart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: white;
+            color: #122838;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: color .2s ease, transform .2s ease;
+        }
+
+        .wishlist-heart:hover {
+            color: #F28C28;
+            transform: scale(1.1);
+        }
+
+        .wishlist-heart.active {
+            color: #CB0E31;
+        }
+
+        /* Uniform product image area */
+
+        .product-card .product-image {
+            width: 100%;
+            height: 300px;
+            flex-shrink: 0;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            padding: 12px;
+            background: #F5E8D1;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F5E8D1;
+            color: #122838;
+            font-size: 14px;
+        }
+
+        /* Product information */
+
+        .product-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #122838;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .product-description {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .product-price {
+            font-size: 17px;
+            font-weight: 700;
+            color: #122838;
+            margin-top: auto;
+        }
+
+        /* Colour swatches */
+
+        .product-colours {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 10px;
+        }
+
+        .colour-swatch {
+            width: 17px;
+            height: 17px;
+            display: inline-block;
+            border: 1px solid rgba(18, 40, 56, 0.35);
+            border-radius: 50%;
+        }
+
+        .empty-message {
+            color: #E4D1AF;
+            padding: 30px 0;
+        }
+
+        /* Subcategory cards */
+
+        .subcategory-card {
+            padding: 8px;
+        }
+
+        .subcategory-card .product-image {
+            height: 280px;
+            border-radius: 8px;
+        }
+
+        .subcategory-card .product-name {
+            text-align: center;
+            font-size: 16px;
+            color: #122838;
+        }
+
+        /* Small laptop / tablet landscape: narrower sidebar */
+
+        @media (min-width: 751px) and (max-width: 1100px) {
+            .listing-layout {
+                grid-template-columns: 180px minmax(0, 1fr);
+                gap: 16px;
+            }
+        }
+
+        /* Tablet */
+
+        @media (max-width: 1100px) {
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        /* Smaller screens */
+
+        @media (max-width: 750px) {
+            .listing-container {
+                padding: 20px 15px;
+            }
+
+            .listing-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                border-right: none;
+                border-bottom: 1px solid rgba(228, 209, 175, 0.2);
+                padding: 15px 0;
+            }
+
+            .products-area {
+                padding: 20px 0;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 18px 12px;
+            }
+
+            .product-card .product-image,
+            .image-placeholder {
+                height: 230px;
+            }
+
+            .subcategory-card .product-image {
+                height: 220px;
+            }
+
+            .product-info {
+                padding: 12px;
+            }
+
+            .product-name {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .product-card .product-image,
+            .image-placeholder {
+                height: 190px;
+            }
+
+            .subcategory-card .product-image {
+                height: 190px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'partials/navbar.html' %}
+
+<main class="listing-container">
+
+    <div class="breadcrumb">
+        BUYZO / <strong>{{ category.name }}</strong>
+    </div>
+
+    {% if subcategories %}
+
+        <h1 class="listing-heading">
+            {{ category.name }}
+        </h1>
+
+        <div class="product-grid subcategory-grid">
+
+            {% for subcategory in subcategories %}
+
+                <a href="{% url 'core:category_detail' subcategory.id %}"
+                   class="product-card subcategory-card">
+
+                    {% if subcategory.image %}
+                        <img
+                            src="{{ subcategory.image.url }}"
+                            alt="{{ subcategory.name }}"
+                            class="product-image"
+                        >
+                    {% else %}
+                        <div class="image-placeholder">
+                            No image available
+                        </div>
+                    {% endif %}
+
+                    <div class="product-info">
+                        <h3 class="product-name">
+                            {{ subcategory.name }}
+                        </h3>
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="listing-heading">
+            <h1>
+                {{ category.name }}
+                <span class="product-count">
+                    - {{ product_count }} items
+                </span>
+            </h1>
+        </div>
+
+        <div class="listing-layout">
+
+            <aside class="filters">
+
+                <div class="filter-heading">
+                    FILTERS
+                </div>
+
+                <div class="filter-section">
+                    <h3>Categories</h3>
+
+                    {% for item in category_filters %}
+
+                        <a class="filter-option"
+                           href="{% url 'core:category_detail' item.id %}">
+                            {{ item.name }}
+                        </a>
+
+                    {% empty %}
+
+                        <p class="product-description">
+                            No other categories
+                        </p>
+
+                    {% endfor %}
+                </div>
+
+                <div class="filter-section">
+                    <h3>Sizes</h3>
+
+                    <p class="product-description">
+                        Size filters will be added next.
+                    </p>
+                </div>
+
+            </aside>
+
+            <section class="products-area">
+
+                <div class="toolbar">
+
+                    <span class="toolbar-label">
+                        Showing {{ product_count }} products
+                    </span>
+
+                    <select class="sort-select">
+                        <option>Sort by: Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Name: A to Z</option>
+                    </select>
+
+                </div>
+
+                <div class="product-grid">
+
+                    {% for product in products %}
+
+                        <div class="product-card">
+
+                            <form method="POST"
+                                  action="{% url 'core:toggle_wishlist' product.id %}"
+                                  class="wishlist-form">
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="wishlist-heart {% if product.id in wishlist_product_ids %}active{% endif %}"
+                                    aria-label="Toggle wishlist">
+
+                                    {% if product.id in wishlist_product_ids %}
+                                        ♥
+                                    {% else %}
+                                        ♡
+                                    {% endif %}
+
+                                </button>
+
+                            </form>
+
+                            <a href="{% url 'core:product_detail' product.id %}"
+                               class="product-link">
+
+                                {% if product.image %}
+
+                                    <img
+                                        src="{{ product.image.url }}"
+                                        alt="{{ product.name }}"
+                                        class="product-image"
+                                    >
+
+                                {% else %}
+
+                                    <div class="image-placeholder">
+                                        No image available
+                                    </div>
+
+                                {% endif %}
+
+                                <div class="product-info">
+
+                                    <h3 class="product-name">
+                                        {{ product.name }}
+                                    </h3>
+
+                                    <div class="product-colours">
+
+                                        {% for colour in product.colours.all %}
+
+                                            <span
+                                                class="colour-swatch"
+                                                title="{{ colour.colour_name }}"
+                                                style="background-color: {{ colour.colour_name }};">
+                                            </span>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                    <div class="product-description">
+                                        {{ product.description|truncatechars:55 }}
+                                    </div>
+
+                                    <div class="product-price">
+                                        ₹{{ product.price }}
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        </div>
+
+                    {% empty %}
+
+                        <p class="empty-message">
+                            No products found in this category.
+                        </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+    {% endif %}
+
+</main>
+
+{% include 'partials/footer.html' %}
+
+{% include 'partials/scripts.html' %}
+
+</body>
+</html>

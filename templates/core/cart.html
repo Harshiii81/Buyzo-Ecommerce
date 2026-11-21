@@ -1,0 +1,283 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% include 'partials/head.html' %}
+
+    <title>My Shopping Cart | BUYZO</title>
+
+    <style>
+        :root {
+            --navy: #122838;
+            --cream: #E4D1AF;
+            --orange: #F28C28;
+            --white: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            background: var(--navy);
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cart-section {
+            min-height: 80vh;
+            padding: 55px 0 75px;
+        }
+
+        .cart-section h1,
+        .cart-section h2,
+        .cart-section h3 {
+            color: var(--cream) !important;
+        }
+
+        .cart-section p {
+            color: var(--cream) !important;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 22px 10px;
+            border-bottom: 1px solid rgba(228, 209, 175, 0.3);
+        }
+
+        .cart-image {
+            width: 75px;
+            height: 75px;
+            min-width: 75px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #FFFFFF;
+            border-radius: 8px;
+        }
+
+        .cart-image img {
+            width: 75px !important;
+            height: 75px !important;
+            max-width: 75px !important;
+            object-fit: contain;
+            display: block;
+        }
+
+        .cart-details {
+            flex: 1;
+        }
+
+        .cart-details h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .cart-details p {
+            font-size: 14px;
+            margin: 4px 0;
+        }
+
+        .cart-subtotal {
+            color: var(--orange) !important;
+            font-weight: 800;
+            font-size: 16px !important;
+            margin-top: 7px !important;
+        }
+
+        .remove-button {
+            color: #FF9B78;
+            background: transparent;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .remove-button:hover {
+            color: var(--orange);
+            text-decoration: underline;
+        }
+
+        .cart-total {
+            color: var(--cream) !important;
+            margin-top: 28px;
+            font-size: 25px;
+        }
+
+        .checkout-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 27px;
+            background: var(--orange);
+            color: var(--navy);
+            border-radius: 8px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .checkout-button:hover {
+            background: var(--cream);
+            color: var(--navy);
+            transform: translateY(-2px);
+        }
+
+        .continue-button {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--orange);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .continue-button:hover {
+            color: var(--cream);
+        }
+
+        .empty-cart {
+            color: var(--cream) !important;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .cart-section {
+                padding: 35px 0 50px;
+            }
+
+            .cart-item {
+                gap: 12px;
+                padding: 18px 0;
+            }
+
+            .cart-details h3 {
+                font-size: 16px;
+            }
+
+            .cart-details p {
+                font-size: 13px;
+            }
+
+            .cart-total {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'partials/navbar.html' %}
+
+    <section class="cart-section">
+        <div class="container mx-auto px-4">
+
+            <h1 class="text-3xl font-bold mb-8">
+                My Shopping Cart
+            </h1>
+
+            {% if cart_items %}
+
+                {% for item in cart_items %}
+
+                <div class="cart-item">
+
+                    <!-- Product Image -->
+                    <div class="cart-image">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}"
+                                 alt="{{ item.product.name }}">
+                        {% else %}
+                            <img src="{% static 'assets/images/products/product-img-1.jpg' %}"
+                                 alt="{{ item.product.name }}">
+                        {% endif %}
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="cart-details">
+
+                        <h3>{{ item.product.name }}</h3>
+
+                        <p>
+                            Price: ₹{{ item.product.price }}
+                        </p>
+
+                        {% if item.colour_name %}
+                            <p>
+                                Colour: {{ item.colour_name }}
+                            </p>
+                        {% endif %}
+
+                        {% if item.size %}
+                            <p>
+                                Size: {{ item.size }}
+                            </p>
+                        {% endif %}
+
+                        <p>
+                            Quantity: {{ item.quantity }}
+                        </p>
+
+                        <p class="cart-subtotal">
+                            Subtotal: ₹{{ item.subtotal }}
+                        </p>
+
+                        <form method="POST"
+                              action="{% url 'core:remove_from_cart' item.product.id %}">
+
+                            {% csrf_token %}
+
+                            <input type="hidden"
+                                   name="cart_key"
+                                   value="{% if item.variant %}v_{{ item.variant.id }}{% else %}{{ item.product.id }}{% endif %}">
+
+                            <button type="submit" class="remove-button">
+                                Remove
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+                {% endfor %}
+
+                <h2 class="cart-total">
+                    Total: ₹{{ total }}
+                </h2>
+
+                <a href="{% url 'core:checkout' %}"
+                   class="checkout-button">
+                    Proceed to Checkout
+                </a>
+
+            {% else %}
+
+                <p class="empty-cart">
+                    Your cart is empty.
+                </p>
+
+            {% endif %}
+
+            <div>
+                <a href="{% url 'core:index' %}"
+                   class="continue-button">
+                    ← Continue Shopping
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    {% include 'partials/footer.html' %}
+
+    {% include 'partials/scripts.html' %}
+
+</body>
+</html>

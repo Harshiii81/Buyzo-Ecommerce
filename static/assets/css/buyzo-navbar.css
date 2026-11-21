@@ -1,0 +1,186 @@
+
+/* =====================================
+   BUYZO — PREMIUM NAVBAR THEME
+   Navy: #122838
+   Beige: #E4D1AF
+   Orange: #F28C28
+===================================== */
+
+.buyzo-header {
+    background: #122838;
+    color: #E4D1AF;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    z-index: 100;
+}
+
+/* Top announcement bar */
+.buyzo-header .bg-gray-100 {
+    background: #0D202D !important;
+    color: #E4D1AF;
+    font-size: 12px;
+}
+
+/* Main header */
+.buyzo-header .container.py-3 {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+/* Logo */
+.buyzo-header .navbar-brand {
+    text-decoration: none;
+}
+
+.buyzo-header .navbar-brand span {
+    color: #E4D1AF !important;
+}
+
+/* Search bar */
+.buyzo-header input[type="search"] {
+    min-height: 46px;
+    background: #ffffff;
+    color: #122838;
+    border: 2px solid #E4D1AF;
+    border-radius: 8px;
+}
+
+.buyzo-header input[type="search"]:focus {
+    border-color: #F28C28;
+    box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.2);
+    outline: none;
+}
+
+/* Search icon */
+.buyzo-header .icon-tabler-search {
+    color: #F28C28;
+}
+
+/* Location button */
+.buyzo-header [data-bs-target="#locationModal"] {
+    color: #E4D1AF !important;
+    border-color: #E4D1AF !important;
+}
+
+.buyzo-header [data-bs-target="#locationModal"]:hover {
+    background: #F28C28 !important;
+    color: #122838 !important;
+}
+
+/* Header icons */
+.buyzo-header .icon-tabler-heart,
+.buyzo-header .icon-tabler-user,
+.buyzo-header .icon-tabler-shopping-bag {
+    color: #E4D1AF;
+    transition: 0.2s ease;
+}
+
+.buyzo-header a:hover .icon-tabler-heart,
+.buyzo-header a:hover .icon-tabler-user,
+.buyzo-header button:hover .icon-tabler-shopping-bag {
+    color: #F28C28;
+}
+
+/* Counters */
+.buyzo-header #wishlist-count,
+.buyzo-header #cartCount {
+    background: #F28C28;
+    color: #122838;
+    font-size: 11px;
+    line-height: 20px;
+}
+
+/* Navigation bar */
+.buyzo-header nav {
+    background: #122838;
+    border-top: 1px solid rgba(228, 209, 175, 0.18);
+    border-bottom: 1px solid rgba(228, 209, 175, 0.18);
+}
+
+/* Navigation links */
+.buyzo-header .nav-link {
+    color: #E4D1AF !important;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 13px !important;
+    transition: 0.2s ease;
+}
+
+.buyzo-header .nav-link:hover {
+    color: #F28C28 !important;
+}
+
+/* All Departments */
+.buyzo-header #dropdownMenuButton1 {
+    background: #F28C28 !important;
+    color: #122838 !important;
+    border-radius: 7px;
+    font-weight: 700;
+    padding: 11px 17px;
+}
+
+.buyzo-header #dropdownMenuButton1:hover {
+    background: #E4D1AF !important;
+}
+
+/* Dropdown menus */
+.buyzo-header .dropdown-menu {
+    background: #ffffff;
+    border: 1px solid #E4D1AF;
+    border-radius: 9px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+}
+
+.buyzo-header .dropdown-item {
+    color: #122838;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 13px;
+}
+
+.buyzo-header .dropdown-item:hover {
+    background: #E4D1AF;
+    color: #122838;
+}
+
+/* Mobile menu */
+.buyzo-header .offcanvas {
+    background: #122838;
+    color: #E4D1AF;
+}
+
+.buyzo-header .offcanvas-header {
+    border-bottom: 1px solid rgba(228, 209, 175, 0.2);
+}
+
+.buyzo-header .offcanvas-body .nav-link {
+    color: #E4D1AF !important;
+    border-bottom: 1px solid rgba(228, 209, 175, 0.15);
+}
+
+/* Mobile menu button */
+.buyzo-header .icon-tabler-menu-2 {
+    color: #E4D1AF !important;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .buyzo-header .container.py-3 {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .buyzo-header .navbar-brand img {
+        width: 46px;
+        height: 46px;
+    }
+
+    .buyzo-header .navbar-brand span {
+        font-size: 34px !important;
+    }
+
+    .buyzo-header .offcanvas-body {
+        padding: 20px;
+    }
+}

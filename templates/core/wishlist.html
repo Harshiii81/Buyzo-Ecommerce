@@ -1,0 +1,217 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% include 'partials/head.html' %}
+
+    <title>My Wishlist | BUYZO</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #122838;
+            color: #E4D1AF;
+        }
+
+        .wishlist-section {
+            min-height: 80vh;
+            padding: 40px 0;
+            background: #122838;
+        }
+
+        .wishlist-title {
+            color: #E4D1AF;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 5px;
+            border-bottom: 1px solid rgba(228, 209, 175, 0.35);
+        }
+
+        .wishlist-image {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .wishlist-image img {
+            width: 60px !important;
+            height: 60px !important;
+            max-width: 60px !important;
+            object-fit: contain;
+            display: block;
+        }
+
+        .wishlist-details {
+            flex: 1;
+        }
+
+        .wishlist-product-name {
+            color: #E4D1AF;
+            font-size: 21px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .wishlist-price {
+            color: #c5b99f;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .view-product {
+            color: #F28C28;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .view-product:hover,
+        .continue-shopping:hover {
+            color: #ffad50;
+            text-decoration: underline;
+        }
+
+        .remove-button {
+            background: transparent;
+            color: #F28C28;
+            border: 1px solid #F28C28;
+            padding: 7px 14px;
+            border-radius: 5px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .remove-button:hover {
+            background: #F28C28;
+            color: #122838;
+        }
+
+        .empty-wishlist {
+            color: #E4D1AF;
+            font-size: 16px;
+            padding: 20px 0;
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 25px;
+            color: #F28C28;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .wishlist-title {
+                font-size: 26px;
+            }
+
+            .wishlist-item {
+                gap: 12px;
+            }
+
+            .wishlist-product-name {
+                font-size: 16px;
+            }
+
+            .remove-button {
+                padding: 6px 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'partials/navbar.html' %}
+
+    <section class="wishlist-section">
+        <div class="container mx-auto px-4">
+
+            <h1 class="wishlist-title">
+                My Wishlist
+            </h1>
+
+            {% if wishlist_items %}
+
+                {% for item in wishlist_items %}
+
+                <div class="wishlist-item">
+
+                    <div class="wishlist-image">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}"
+                                 alt="{{ item.product.name }}">
+                        {% else %}
+                            <img src="{% static 'assets/images/products/product-img-1.jpg' %}"
+                                 alt="{{ item.product.name }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="wishlist-details">
+                        <h3 class="wishlist-product-name">
+                            {{ item.product.name }}
+                        </h3>
+
+                        <p class="wishlist-price">
+                            Price: ₹{{ item.product.price }}
+                        </p>
+
+                        <a href="{% url 'core:product_detail' item.product.id %}"
+                           class="view-product">
+                            View Product
+                        </a>
+                    </div>
+
+                    <form method="POST"
+                          action="{% url 'core:toggle_wishlist' item.product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="remove-button">
+                            Remove
+                        </button>
+                    </form>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty-wishlist">
+                    Your wishlist is empty.
+                </p>
+
+            {% endif %}
+
+            <a href="{% url 'core:index' %}"
+               class="continue-shopping">
+                Continue Shopping
+            </a>
+
+        </div>
+    </section>
+
+{% include 'partials/footer.html' %}
+{% include 'partials/scripts.html' %}
+
+</body>
+</html>

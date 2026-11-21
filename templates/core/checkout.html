@@ -1,0 +1,293 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include 'partials/head.html' %}
+    <title>Checkout | BUYZO</title>
+
+    <style>
+        body {
+            background: #122838;
+            color: #E4D1AF;
+        }
+
+        .checkout-page {
+            padding: 28px 0 56px;
+        }
+
+        .checkout-page > .container > h1 {
+            color: #E4D1AF;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .checkout-box {
+            background: #ffffff;
+            color: #122838;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .checkout-box:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkout-box h2 {
+            color: #122838;
+        }
+
+        .checkout-box input[type="text"],
+        .checkout-box input[type="email"],
+        .checkout-box input[type="tel"] {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 6px;
+            margin-bottom: 15px;
+            color: #222;
+            background: #fff;
+        }
+
+        .checkout-box input:focus {
+            outline: none;
+            border-color: #F28C28;
+            box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.2);
+        }
+
+        .checkout-box label {
+            font-weight: 600;
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0 16px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 6px 0;
+            padding: 12px;
+            border: 1px solid #e3e3e3;
+            border-radius: 8px;
+            color: #222;
+            cursor: pointer;
+        }
+
+        .payment-option input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .summary-line > div {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .summary-line > span {
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .place-order-btn {
+            display: block;
+            width: 100%;
+            margin-top: 18px;
+            padding: 14px 20px;
+            background: #F28C28;
+            color: #122838;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .place-order-btn:hover {
+            background: #E4D1AF;
+        }
+
+        @media (min-width: 640px) {
+            .checkout-box { padding: 24px; }
+            .form-row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (min-width: 992px) {
+            .checkout-page > .container > h1 { font-size: 2rem; }
+            .checkout-layout {
+                grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+                gap: 28px;
+            }
+            .checkout-summary {
+                position: sticky;
+                top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% include 'partials/navbar.html' %}
+
+<div class="checkout-page">
+<div class="container">
+
+    <h1 class="font-bold">Checkout</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="checkout-layout">
+
+            <div class="checkout-main">
+
+                <div class="checkout-box">
+                    <h2 class="text-xl font-bold mb-5">Customer Details</h2>
+
+                    <label>Full Name</label>
+                    <input type="text" name="full_name" autocomplete="name" required>
+
+                    <div class="form-row-2">
+                        <div>
+                            <label>Email Address</label>
+                            <input type="email" name="email" autocomplete="email" required>
+                        </div>
+                        <div>
+                            <label>Mobile Number</label>
+                            <input type="tel" name="phone" inputmode="numeric" autocomplete="tel" pattern="[0-9]{10}" maxlength="10" required>
+                        </div>
+                    </div>
+
+                    <h2 class="text-xl font-bold mt-5 mb-5">Delivery Address</h2>
+
+                    <label>House / Flat / Building</label>
+                    <input type="text" name="house_address" required>
+
+                    <label>Street / Area / Locality</label>
+                    <input type="text" name="street_address" required>
+
+                    <label>Landmark (Optional)</label>
+                    <input type="text" name="landmark">
+
+                    <div class="form-row-2">
+                        <div>
+                            <label>City</label>
+                            <input type="text" name="city" required>
+                        </div>
+                        <div>
+                            <label>State</label>
+                            <input type="text" name="state" required>
+                        </div>
+                    </div>
+
+                    <label>PIN Code</label>
+                    <input type="text" name="pincode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+                </div>
+
+                <div class="checkout-box">
+                    <h2 class="text-xl font-bold mb-4">Payment Method</h2>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment_method" value="upi" required>
+                        UPI / Google Pay
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment_method" value="phonepe">
+                        PhonePe
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment_method" value="paytm">
+                        Paytm
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment_method" value="card">
+                        Debit / Credit Card
+                    </label>
+
+                    <label class="payment-option">
+                        <input type="radio" name="payment_method" value="cod">
+                        Cash on Delivery
+                    </label>
+
+                    <p class="text-sm mt-4">
+                        Online payments will be processed through a secure payment gateway.
+                        Never enter your UPI PIN or card security details directly on BUYZO.
+                    </p>
+                </div>
+
+            </div>
+
+            <aside class="checkout-summary">
+                <div class="checkout-box">
+                    <h2 class="text-xl font-bold mb-4">Order Summary</h2>
+
+                    {% for item in cart_items %}
+                    <div class="summary-line">
+                        <div>
+                            <p class="font-semibold">
+                                {{ item.product.name }} × {{ item.quantity }}
+                            </p>
+                            {% if item.colour_name %}
+                                <p class="text-sm text-gray-600">Colour: {{ item.colour_name }}</p>
+                            {% endif %}
+                            {% if item.size %}
+                                <p class="text-sm text-gray-600">Size: {{ item.size }}</p>
+                            {% endif %}
+                        </div>
+                        <span>₹{{ item.subtotal }}</span>
+                    </div>
+                    {% endfor %}
+
+                    <hr class="my-4">
+
+                    <div class="flex justify-between text-xl font-bold">
+                        <span>Total</span>
+                        <span>₹{{ total }}</span>
+                    </div>
+
+                    <button type="submit" class="place-order-btn">
+                        Place Order
+                    </button>
+                </div>
+            </aside>
+
+        </div>
+    </form>
+
+</div>
+</div>
+
+{% include 'partials/footer.html' %}
+{% include 'partials/scripts.html' %}
+
+</body>
+</html>

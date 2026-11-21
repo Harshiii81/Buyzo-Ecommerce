@@ -1,0 +1,681 @@
+{% load static %}
+
+<header class="buyzo-header">
+    <!-- Top announcement bar -->
+    <div class="border-b">
+        <div class="bg-gray-100 py-2">
+            <div class="container">
+                <div class="flex items-center justify-center md:justify-between">
+                    <span class="text-sm text-center">
+                        Super Value Deals - Save more with coupons
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <div class="container py-3">
+
+            <!-- Main header row -->
+            <div class="buyzo-main-row flex items-center w-full gap-3">
+
+                <!-- Hamburger Menu (Phone + Desktop) -->
+                <button
+                    type="button"
+                    class="collapsed flex-shrink-0 text-gray-800"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#navbar-default"
+                    aria-controls="navbar-default"
+                    aria-label="Open categories menu">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="25" height="25"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M4 6h16" />
+                        <path d="M4 12h16" />
+                        <path d="M4 18h16" />
+                    </svg>
+                </button>
+
+                <!-- BUYZO Logo -->
+                <div class="buyzo-brand flex-shrink-0">
+                    <a class="navbar-brand flex items-center gap-2" href="/">
+                        <img
+                            src="{% static 'assets/images/logo/shoppingEcommerce.svg' %}"
+                            alt="BUYZO Shopping Logo"
+                            class="object-contain"
+                        />
+
+                        <span>BUYZO</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Search Icon -->
+                <button
+                    type="button"
+                    class="buyzo-mobile-search flex-shrink-0"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mobileSearch"
+                    aria-expanded="false"
+                    aria-controls="mobileSearch"
+                    aria-label="Open search">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="23" height="23"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="10" cy="10" r="7" />
+                        <path d="m21 21-6-6" />
+                    </svg>
+                </button>
+
+                <!-- Desktop Search Bar -->
+                <div class="buyzo-desktop-search flex-1 hidden lg:block">
+                    <form action="{% url 'core:search_products' %}" method="GET">
+                        <div class="relative">
+                            <input
+                                name="q"
+                                type="search"
+                                placeholder="Search for products"
+                                id="searchProducts"
+                                class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.2rem_rgba(18,40,56,.12)] focus:ring-0 focus:border-[#122838] block p-2 px-3 w-full text-base"
+                            />
+
+                            <button
+                                class="absolute right-0 top-0 p-3"
+                                type="submit"
+                                aria-label="Search">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    fill="none"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="10" cy="10" r="7" />
+                                    <path d="m21 21-6-6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Header Icons -->
+                <div class="buyzo-header-icons flex items-center gap-3 sm:gap-4 flex-shrink-0">
+
+                    <!-- Wishlist -->
+                    <a href="{% url 'core:wishlist' %}"
+                        class="relative text-gray-600"
+                        aria-label="Wishlist">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+                        </svg>
+
+                        <span id="wishlist-count"
+                            class="absolute top-0 -mt-1 left-full rounded-full h-5 w-5 -ml-2 bg-[#F28C28] text-white text-center font-semibold text-sm">
+                            {{ wishlist_count }}
+                        </span>
+                    </a>
+
+                    <!-- Login / Signup (Desktop only) -->
+                    {% if not request.user.is_authenticated %}
+                    <div class="hidden lg:flex items-center gap-2">
+                        <button
+                            type="button"
+                            onclick="openAuthModal('login')"
+                            class="px-3 py-2 rounded-lg border border-[#122838] text-[#122838] font-semibold hover:bg-[#122838] hover:text-white transition">
+                            Login
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="openAuthModal('signup')"
+                            class="px-3 py-2 rounded-lg bg-[#F28C28] text-white font-semibold hover:bg-[#d97616] transition">
+                            Sign Up
+                        </button>
+                    </div>
+                    {% endif %}
+
+                    <!-- User Profile -->
+                    <a
+                        href="{% if request.user.is_authenticated %}{% url 'userauths:account' %}{% else %}#userModal{% endif %}"
+                        class="text-gray-600"
+                        aria-label="My account"
+                        {% if not request.user.is_authenticated %}
+                        data-bs-toggle="modal"
+                        data-bs-target="#userModal"
+                        {% endif %}>
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                        </svg>
+                    </a>
+
+                    <!-- Shopping Cart -->
+                    <button
+                        type="button"
+                        class="text-gray-600 relative"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight"
+                        role="button"
+                        aria-controls="offcanvasRight"
+                        aria-label="Shopping cart">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
+                            <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+                        </svg>
+
+                        <span id="cartCount"
+                            class="absolute top-0 -mt-1 left-full rounded-full h-5 w-5 -ml-3 bg-[#F28C28] text-white text-center font-semibold text-sm">
+                            {{ cart_count }}
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Expandable Mobile Search -->
+            <div class="collapse lg:hidden mt-3" id="mobileSearch">
+                <form action="{% url 'core:search_products' %}" method="GET">
+                    <div class="relative">
+                        <input
+                            name="q"
+                            type="search"
+                            placeholder="Search for products"
+                            class="border border-gray-300 text-gray-900 rounded-lg block p-2 px-3 w-full text-base"
+                        />
+
+                        <button
+                            class="absolute right-0 top-0 p-3"
+                            type="submit"
+                            aria-label="Search">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                width="16" height="16"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                fill="none"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="10" cy="10" r="7" />
+                                <path d="m21 21-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Categories Offcanvas Menu -->
+        <div
+            class="offcanvas offcanvas-left"
+            tabindex="-1"
+            id="navbar-default"
+            aria-labelledby="navbarDefaultLabel">
+
+            <div class="offcanvas-header pb-1">
+                <a href="{% url 'core:index' %}">
+                    <span class="font-bold text-xl" style="color:#E4D1AF;">
+                        BUYZO
+                    </span>
+                </a>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 6l-12 12" />
+                        <path d="M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="offcanvas-body">
+
+                <!-- All Departments -->
+                <h5 class="font-bold mb-3" style="color:#E4D1AF;">
+                    All Categories
+                </h5>
+
+                <ul class="list-unstyled mb-4">
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 3 %}">
+                            Fashion & Clothing
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 33 %}">
+                            Electronics & Gadgets
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 100 %}">
+                            Home & Kitchen
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 47 %}">
+                            Beauty & Personal Care
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 82 %}">
+                            Sports & Fitness
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 104 %}">
+                            Toys & Baby Products
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 93 %}">
+                            Books & Stationery
+                        </a>
+                    </li>
+
+                </ul>
+
+                <hr />
+
+                <!-- Main Navigation -->
+                <h5 class="font-bold my-3" style="color:#E4D1AF;">
+                    Shop By
+                </h5>
+
+                <ul class="list-unstyled">
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 3 %}">
+                            Men
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 3 %}">
+                            Women
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 33 %}">
+                            Electronics
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 82 %}">
+                            Sports
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 104 %}">
+                            Kids
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item py-2"
+                            href="{% url 'core:category_detail' 100 %}">
+                            Home
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- User Authentication Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-8">
+
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-800" id="userModalLabel">Sign Up</h3>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M18 6l-12 12" />
+                        <path d="M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- SIGN UP FORM -->
+                <form id="signupForm" method="POST" action="{% url 'userauths:signup' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="signupUsername" class="mb-2 block text-gray-800">Name</label>
+                        <input type="text" name="username" id="signupUsername"
+                            class="form-control border border-gray-300 rounded-lg block p-2 px-3 w-full text-base"
+                            placeholder="Enter Your Name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="signupEmail" class="mb-2 block text-gray-800">Email address</label>
+                        <input type="email" name="email" id="signupEmail"
+                            class="form-control border border-gray-300 rounded-lg block p-2 px-3 w-full text-base"
+                            placeholder="Enter Email address" required>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="signupPassword" class="mb-2 block text-gray-800">Password</label>
+                        <input type="password" name="password" id="signupPassword"
+                            class="form-control border border-gray-300 rounded-lg block p-2 px-3 w-full text-base"
+                            placeholder="Enter Password" required>
+                    </div>
+
+                    <button type="submit"
+                        class="btn inline-flex items-center bg-green-600 text-white justify-center">
+                        Sign Up
+                    </button>
+                </form>
+
+                <!-- LOGIN FORM -->
+                <form id="loginForm" method="POST" action="{% url 'userauths:login' %}" style="display:none;">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="loginEmail" class="mb-2 block text-gray-800">Email address</label>
+                        <input type="email" name="email" id="loginEmail"
+                            class="form-control border border-gray-300 rounded-lg block p-2 px-3 w-full text-base"
+                            placeholder="Enter Email address" required>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="loginPassword" class="mb-2 block text-gray-800">Password</label>
+                        <input type="password" name="password" id="loginPassword"
+                            class="form-control border border-gray-300 rounded-lg block p-2 px-3 w-full text-base"
+                            placeholder="Enter Password" required>
+                    </div>
+
+                    <button type="submit"
+                        class="btn inline-flex items-center bg-green-600 text-white justify-center">
+                        Sign In
+                    </button>
+                </form>
+
+            </div>
+
+            <div class="modal-footer flex border-0 justify-center mt-3">
+                <span id="signupText">
+                    Already have an account?
+                    <a href="#" id="showLogin" class="text-green-600 ml-1">Sign in</a>
+                </span>
+
+                <span id="loginText" style="display:none;">
+                    Don't have an account?
+                    <a href="#" id="showSignup" class="text-green-600 ml-1">Sign up</a>
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
+    const modalTitle = document.getElementById("userModalLabel");
+    const signupText = document.getElementById("signupText");
+    const loginText = document.getElementById("loginText");
+
+    document.getElementById("showLogin").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        signupForm.style.display = "none";
+        loginForm.style.display = "block";
+
+        signupText.style.display = "none";
+        loginText.style.display = "block";
+
+        modalTitle.textContent = "Sign In";
+    });
+
+    document.getElementById("showSignup").addEventListener("click", function (e) {
+        e.preventDefault();
+
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+
+        loginText.style.display = "none";
+        signupText.style.display = "block";
+
+        modalTitle.textContent = "Sign Up";
+    });
+});
+</script>
+
+<script>
+function openAuthModal(type) {
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
+    const modalTitle = document.getElementById("userModalLabel");
+    const signupText = document.getElementById("signupText");
+    const loginText = document.getElementById("loginText");
+
+    if (type === "login") {
+        signupForm.style.display = "none";
+        loginForm.style.display = "block";
+        signupText.style.display = "none";
+        loginText.style.display = "block";
+        modalTitle.textContent = "Sign In";
+    } else {
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+        loginText.style.display = "none";
+        signupText.style.display = "block";
+        modalTitle.textContent = "Sign Up";
+    }
+
+    const modalElement = document.getElementById("userModal");
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.show();
+}
+</script>
+
+<!-- Shop Cart -->
+
+<div class="offcanvas offcanvas-right" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header border-b">
+        <div>
+            <h5 id="offcanvasRightLabel">Shop Cart</h5>
+            <span>Location in 382480</span>
+        </div>
+        <button type="button" class="btn-close text-inherit" data-bs-dismiss="offcanvas" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x text-gray-700" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M18 6l-12 12" />
+                <path d="M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+    <div class="offcanvas-body p-4" style="overflow-y: auto; max-height: calc(100vh - 70px);">
+        <div>
+            <!-- alert -->
+            <div class="bg-red-500 bg-opacity-25 text-red-800 mb-3 rounded-lg p-4" role="alert">
+                You’ve got FREE delivery. Start
+                <a href="#!" class="alert-link">checkout now!</a>
+            </div>
+           <div id="offcanvasCartContent">
+    {% include 'partials/cart_items.html' %}
+</div>
+
+            <!-- btn -->
+            <div class="flex justify-between mt-4 gap-3">
+    <a href="{% url 'core:index' %}"
+       class="btn bg-green-600 text-white">
+        Continue Shopping
+    </a>
+
+    <a href="{% url 'core:cart' %}"
+       class="btn bg-gray-800 text-white">
+        View Cart
+    </a>
+</div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h5 class="mb-1" id="locationModalLabel">Choose your Delivery Location</h5>
+                        <p class="text-sm">Enter your address and we will specify the offer you area.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x text-gray-700"
+                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M18 6l-12 12" />
+                            <path d="M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="my-5">
+                    <label for="searhNavbarSecond" class="invisible hidden">Search</label>
+                    <input
+                        class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.2rem_rgba(18,40,56,.12)] focus:ring-0 focus:border-[#122838] block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+                        type="search" placeholder="Search for products" id="searhNavbarSecond" />
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <h6>Select Location</h6>
+                    <a href="#" class="btn btn-outline-gray-400 text-gray-500 btn-sm">Clear All</a>
+                </div>
+                <div>
+                    <div data-simplebar style="height: 300px">
+                        <div class="list-none">
+                            <a href="#"
+                                class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3 active active:bg-gray-100 bg-gray-100">
+                                <span>Alabama</span>
+                                <span>Min:$20</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Alaska</span>
+                                <span>Min:$30</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Arizona</span>
+                                <span>Min:$50</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>California</span>
+                                <span>Min:$29</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Colorado</span>
+                                <span>Min:$80</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Florida</span>
+                                <span>Min:$90</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Arizona</span>
+                                <span>Min:$50</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>California</span>
+                                <span>Min:$29</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Colorado</span>
+                                <span>Min:$80</span>
+                            </a>
+                            <a href="#" class="border-b hover:bg-gray-100 flex justify-between items-center px-2 py-3">
+                                <span>Florida</span>
+                                <span>Min:$90</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
