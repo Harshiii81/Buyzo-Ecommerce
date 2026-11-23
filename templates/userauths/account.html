@@ -184,6 +184,26 @@
 
                 <p><strong>Order Status:</strong> {{ order.get_status_display }}</p>
 
+                {% if order.status == 'pending' or order.status == 'confirmed' %}
+    <form method="POST"
+          action="{% url 'userauths:cancel_order' order.id %}"
+          onsubmit="return confirm('Are you sure you want to cancel this order?');"
+          style="margin-top: 15px;">
+
+        {% csrf_token %}
+
+        <button type="submit"
+                style="background:#dc2626; color:white; padding:10px 18px; border:none; border-radius:6px; cursor:pointer;">
+            Cancel Order
+        </button>
+
+    </form>
+{% elif order.status == 'cancelled' %}
+    <p style="color:#dc2626; font-weight:bold; margin-top:10px;">
+        Order Cancelled
+    </p>
+{% endif %}
+
                 <hr style="margin: 12px 0;">
 
                 <strong>Items:</strong>

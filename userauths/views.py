@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from core.models import Order, SavedAddress
+
 
 User = get_user_model()
 
@@ -78,6 +79,34 @@ def account_view(request):
         "orders": orders,
         "addresses": addresses,
     })
+
+@require_POST
+@login_required(login_url="core:index")
+def cancel_order_view(request, order_id):
+
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user
+    )
+
+    if order.status not in ['pending', 'confirmed']:
+        messages.error(
+            request,
+            "This order can no longer be cancelled."
+        )
+        return redirect("userauths:account")
+
+    order.status = 'cancelled'
+    order.save(update_fields=['status'])
+
+    messages.success(
+        request,
+        f"Order #{order.id} has been cancelled successfully."
+    )
+
+    return redirect("userauths:account")
+
 
 @require_POST
 @login_required(login_url="core:index")
